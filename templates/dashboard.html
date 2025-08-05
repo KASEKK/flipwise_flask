@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Progression des Decks</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <h2>Progression globale</h2>
+    <canvas id="pieChart" width="400" height="400"></canvas>
+
+    <script>
+        fetch('/api/progress')
+            .then(response => response.json())
+            .then(data => {
+                const labels = data.map(d => d.name);
+                const progress = data.map(d => d.progress_percent);
+
+                const ctx = document.getElementById('pieChart').getContext('2d');
+                const chart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: "Progression (%)",
+                            data: progress,
+                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#9CCC65', '#FFA726']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Taux de progression par deck'
+                            }
+                        }
+                    }
+                });
+            });
+    </script>
+</body>
+
+</html>

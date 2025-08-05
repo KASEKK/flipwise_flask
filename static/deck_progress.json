@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Deck 1",
+        "total_cards": 6,
+        "correct_cards": 4,
+        "progress_percent": 66.66666666666666
+    },
+    {
+        "name": "Deck 2",
+        "total_cards": 6,
+        "correct_cards": 5,
+        "progress_percent": 83.33333333333334
+    },
+    {
+        "name": "Deck 3",
+        "total_cards": 6,
+        "correct_cards": 2,
+        "progress_percent": 33.33333333333333
+    },
+    {
+        "name": "Deck 4",
+        "total_cards": 6,
+        "correct_cards": 2,
+        "progress_percent": 33.33333333333333
+    },
+    {
+        "name": "Deck 5",
+        "total_cards": 6,
+        "correct_cards": 2,
+        "progress_percent": 33.33333333333333
+    }
+]
