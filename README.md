@@ -1,42 +1,78 @@
-# 📊 FlipWise – Data & Visualisation
 
-Ce dossier contient les éléments liés à la visualisation des données utilisateurs, à intégrer dans la page d'accueil de l'application FlipWise.
+# 📚 FlipWise
 
----
-
-## 🎯 Objectif du graphique
-
-Offrir à l'utilisateur une **vue synthétique de sa progression**, en affichant :
-- Le **pourcentage global de réussite** sur tous ses decks de révision
-- Une **distinction claire** entre les cartes acquises et celles encore à revoir
-
-Cela permet à l’utilisateur de :
-- visualiser ses efforts,
-- identifier ce qu’il reste à travailler,
-- être motivé à compléter ses decks.
+FlipWise est une mini-application Flask pour visualiser la progression d'un utilisateur dans des decks de cartes à réviser, dans une logique proche des flashcards type Anki.
 
 ---
 
-## 📁 Contenu du dossier
+## 🔧 Fonctionnalités
 
-| Fichier | Description |
-|--------|-------------|
-| `data_simulation.json` | Données simulées contenant 1 utilisateur, 5 decks, et 6 cartes par deck, avec des statuts (`acquise`, `à revoir`, `révisée`) |
-| `graphique_progression.py` | Fonction Python générant un graphique circulaire (camembert) à partir des données simulées |
-| `resultat_graphique.png` | Aperçu visuel du graphique généré, destiné à être intégré dans la page d'accueil |
-| `README.md` | Présentation du livrable et instructions de collaboration |
+- Visualisation de la progression **par deck** (via `/api/progress`)
+- Visualisation de la progression **globale** (via `/api/status-progress`)
+- Deux vues HTML avec graphiques interactifs Chart.js :
+  - `/` → Vue par deck
+  - `/status` → Vue globale (acquises vs à réviser)
 
 ---
 
-## ⚙️ Instructions
+## 🗂️ Structure du projet
 
-### 💻 1. Tester le graphique
-Ouvrir le fichier `graphique_progression.py` dans un environnement comme **Jupyter Notebook** ou **VS Code**.
+```
+FlipWise/
+├── app.py                     # API Flask
+├── static/
+│   ├── deck_progress.json     # Données par deck
+│   ├── card_status_progress.json  # Données globales (à partir des statuts des cartes)
+│   └── flashcards_user1_data.json # Données utilisateur avec statut des cartes
+├── templates/
+│   ├── dashboard.html         # Vue par deck
+│   └── status_progress.html   # Vue globale
+├── doc/
+│   ├── architecture_data.md   # Documentation data
+│   └── logique_metier.md      # Documentation métier
+└── README.md
+```
 
-Lancer le script pour générer un aperçu du graphique (`resultat_graphique.png`).
+---
 
-### 🔄 2. À implémenter côté front
-- Le composant devra intégrer le graphique généré dynamiquement (via une API ou un service).
-- La logique Python pourra être réécrite en TypeScript/JS si nécessaire, ou bien exposée par un backend si celui-ci existe.
-- À discuter : est-ce que le front attend une image ou une structure de données à afficher dynamiquement via Chart.js, etc.
+## 🚀 Lancer le projet en local
 
+1. Crée un environnement virtuel :
+```bash
+conda create -n flipwise-data python=3.10
+conda activate flipwise-data
+pip install flask
+```
+
+2. Lance l’app :
+```bash
+python app.py
+```
+
+3. Accède aux pages :
+- Vue deck : [http://localhost:5000/](http://localhost:5000/)
+- Vue globale : [http://localhost:5000/status](http://localhost:5000/status)
+
+---
+
+## 🧑‍💻 Pour les développeurs frontend
+
+Tu peux intégrer les graphiques directement avec Chart.js. Il suffit de faire :
+
+```js
+fetch('/api/status-progress')
+  .then(response => response.json())
+  .then(data => {
+    // utilise data.acquises_percent et data.à_revoir_percent
+  });
+```
+
+Et de faire pareil avec `/api/progress` pour le détail par deck.
+
+---
+
+## 📌 À venir
+
+- Authentification multi-utilisateur
+- Export/Import de sessions
+- Algorithme de SRS personnalisé

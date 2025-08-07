@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Progression des Decks</title>
+    <title>Statut des cartes</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
@@ -32,15 +32,15 @@
 </head>
 
 <body>
-    <h2>Progression globale</h2>
+    <h2>Répartition des cartes</h2>
     <canvas id="pieChart"></canvas>
 
     <script>
-        fetch('/api/progress')
+        fetch('/api/status-progress')
             .then(response => response.json())
             .then(data => {
-                const labels = data.map(d => d.name);
-                const progress = data.map(d => d.progress_percent);
+                const labels = ['Acquises', 'À réviser'];
+                const values = [data.acquises, data["à réviser"]];
 
                 const ctx = document.getElementById('pieChart').getContext('2d');
                 const chart = new Chart(ctx, {
@@ -48,15 +48,8 @@
                     data: {
                         labels: labels,
                         datasets: [{
-                            label: "Progression (%)",
-                            data: progress,
-                            backgroundColor: [
-                                '#24527A', // Bleu principal
-                                '#8AB6D6', // Bleu clair
-                                '#F2C572', // Jaune doux
-                                '#DB6B6B', // Rouge doux
-                                '#A9D18E'  // Vert doux
-                            ],
+                            data: values,
+                            backgroundColor: ['#A9D18E', '#F2C572'],
                             borderColor: '#FFFFFF',
                             borderWidth: 2
                         }]
@@ -75,7 +68,7 @@
                             },
                             title: {
                                 display: true,
-                                text: 'Taux de progression par deck',
+                                text: 'Cartes acquises vs à réviser',
                                 color: '#2C3E50',
                                 font: {
                                     size: 18,

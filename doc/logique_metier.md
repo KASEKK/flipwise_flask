@@ -1,47 +1,47 @@
-Ce document décrit les règles fonctionnelles à appliquer dans le projet, 
-que ce soit via le mock json-server ou directement en Angular. 
-Il remplace la logique backend par des comportements à simuler côté front.
 
--------------------------------------------------------------------
+# 🧠 Logique Métier
 
-🔐 Création d’un utilisateur (simulé)
-Quand l’utilisateur remplit un formulaire d’inscription :
+## 📌 Objectif de l’application
 
-Créer un objet user dans /users
+Permettre à un utilisateur de suivre et d’optimiser sa progression dans des decks de cartes à réviser, dans une logique proche de l’apprentissage par répétition espacée (SRS).
 
-S’assurer qu’il a un id, un username et un email unique
+---
 
-Pas besoin de vrai mot de passe → champ simulé ok
+## 📍 Règles métier principales
 
-📦 Création d’un deck
-Quand l’utilisateur crée un deck :
+### 1. Statut d'une carte
 
-POST /decks avec name, description, et userId
+Chaque carte a un **statut** stocké dans `flashcards_user1_data.json` :
 
-Le front doit filtrer les decks par userId pour ne pas afficher ceux des autres
+- `"à réviser"` : carte à revoir prochainement.
+- `"acquise"` : carte maîtrisée, pas à revoir pour le moment.
 
-🃏 Ajout d’une carte
-POST /cards avec deckId, question, answer, status = 'à revoir' par défaut
+> Ces statuts sont **la source principale** de vérité pour la progression.
 
-Chaque carte créée est directement liée à un deck
+---
 
-🎮 Quiz (très important à détailler)
-Le front charge les cartes du deck : GET /cards?deckId=1
+### 2. Reviews
 
-À chaque carte :
+Les reviews sont un historique des réponses de l’utilisateur. Elles servent uniquement à **évaluer la carte**, et à **mettre à jour son statut**.
 
-Quand l’utilisateur clique sur “Correct” ou “Incorrect” :
+> On ne se base **plus** directement sur les `reviews` pour les calculs de progression dans les graphiques.
 
-POST /reviews avec rating = correct|incorrect, userId, cardId
+---
 
-PATCH /cards/:id pour mettre à jour status = 'acquise' ou 'à revoir'
+## 📊 Utilisation des statuts pour les visualisations
 
-À la fin :
+### ➤ Statistiques globales : `/status_progress.html`
+- Basé uniquement sur les statuts `"acquise"` vs `"à réviser"`.
+- Les données sont extraites du fichier `flashcards_user1_data.json`.
 
-Le front doit calculer lui-même le score (GET /reviews?deckId=1&userId=1)
+### ➤ Statistiques par deck : `/dashboard.html`
+- Basé sur le taux de bonnes réponses (`"correct"`) dans les `reviews`.
+- Sert à suivre la progression **historique** par deck.
 
-Puis proposer :
+---
 
-Rejouer toutes les cartes (GET /cards?deckId=1)
+## 🧩 Extension possible
 
-Ou seulement les ratées (GET /cards?deckId=1&status=à revoir)
+- Intégrer un algorithme de SRS pour automatiser le changement de statut.
+- Ajout de rappels par mail pour les cartes à revoir.
+- Liaison avec une base PostgreSQL pour multi-utilisateur.
