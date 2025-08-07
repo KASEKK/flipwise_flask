@@ -2,7 +2,8 @@
 # 📚 FlipWise
 
 FlipWise est une mini-application Flask pour visualiser la progression d'un utilisateur dans des decks de cartes à réviser, dans une logique proche des flashcards type Anki.
-
+Il a été fait en collaboration avec mon groupe de formation et une équipe de dev qui s'occupait principalement du front-end de l'application et des composants angular. 
+Mon travail complémentaire au leur. 
 ---
 
 ## 🔧 Fonctionnalités
